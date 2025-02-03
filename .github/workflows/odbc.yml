@@ -1,7 +1,6 @@
 name: ODBC Driver
 
 on:
-	workflow_dispatch:
 	pull_request:
 	push:
 
