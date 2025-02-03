@@ -6,11 +6,11 @@ on:
 
 jobs:
   windows-odbc:
-	runs-on: windows-2025
+    runs-on: windows-2025
 	steps:
 	  - name: Create repo directories
-	    run: |
-		  mkdir github
+		run: |
+	      mkdir github
 		  cd github
 			
 	  - name: Set up vcpkg
