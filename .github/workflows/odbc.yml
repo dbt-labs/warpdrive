@@ -6,7 +6,7 @@ on:
 
 jobs:
   windows-odbc:
-    runs-on: windows-latest
+    runs-on: windows-2015
     steps:
       - name: Create repo directories
         run: |
@@ -17,12 +17,13 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg/
           ./vcpkg/bootstrap-vcpkg.bat
-          cd vpkg
+          cd vcpkg
           pwd >> $VCPKG_ROOT
           echo $VCPKG_ROOT
 
       - name: Clone
         run: |
           cd ..
+          pwd
           git clone https://github.com/apache/arrow.git
 
