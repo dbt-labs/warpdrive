@@ -1,0 +1,29 @@
+name: ODBC Driver
+
+on:
+	workflow_dispatch:
+	pull_request:
+	push:
+
+jobs:
+	windows-odbc:
+		runs-on: windows-2025
+		steps:
+			- name: Create repo directories
+			  run: |
+					mkdir github
+					cd github
+			
+			- name: Set up vcpkg
+			  run: |
+					git clone https://github.com/microsoft/vcpkg/
+					./vcpkg/bootstrap-vcpkg.bat
+					cd vpkg
+					pwd >> $VCPKG_ROOT
+					echo $VCPKG_ROOT
+
+			- name: Clone
+			  run:|
+					cd ..
+					git clone https://github.com/apache/arrow.git
+
