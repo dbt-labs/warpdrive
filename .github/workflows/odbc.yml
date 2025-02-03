@@ -6,8 +6,8 @@ on:
 
 jobs:
   windows-odbc:
-	runs-on: windows-latest
-	steps:
+    runs-on: windows-latest
+    steps:
 		- name: Create repo directories
 			run: |
 			mkdir github
