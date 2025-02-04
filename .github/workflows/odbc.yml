@@ -35,3 +35,6 @@ jobs:
         uses: ssrobins/install-cmake@v1
 
       - uses: actions/checkout@v4
+
+      - name: Show directory tree
+        run: tree
