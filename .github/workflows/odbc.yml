@@ -27,6 +27,7 @@ jobs:
     
       - name: Set up vcpkg
         run: |
+          cd github
           pwd
           ./vcpkg/bootstrap-vcpkg.bat
           cd vcpkg
