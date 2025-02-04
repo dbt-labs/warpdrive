@@ -6,7 +6,7 @@ on:
 
 jobs:
   windows-odbc:
-    runs-on: windows-2015
+    runs-on: windows-latest
     steps:
       - name: Create repo directories
         run: |
@@ -21,9 +21,17 @@ jobs:
           pwd >> $VCPKG_ROOT
           echo $VCPKG_ROOT
 
-      - name: Clone
+      - name: Clone arrow
         run: |
           cd ..
           pwd
           git clone https://github.com/apache/arrow.git
 
+      - name: Clone flight
+        run: |
+          git clone https://github.com/dbt-labs/flightsql-odbc.git
+
+      - name: Install CMake
+        uses: ssrobins/install-cmake@v1
+
+      - uses: actions/checkout@v4
