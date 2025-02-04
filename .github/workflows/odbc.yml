@@ -17,16 +17,17 @@ jobs:
         run: |
           cd github
           git clone https://github.com/microsoft/vcpkg.git
+          pwd
           tree
 
-      - name: Clone vcpkg
-        uses: actions/checkout@v4
-        with:
-          repository: microsoft/vcpkg
+      # - name: Clone vcpkg
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: microsoft/vcpkg
     
       - name: Set up vcpkg
         run: |
-          tree
+          pwd
           ./vcpkg/bootstrap-vcpkg.bat
           cd vcpkg
           pwd >> $VCPKG_ROOT
