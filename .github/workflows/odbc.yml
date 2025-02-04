@@ -22,7 +22,7 @@ jobs:
           cd ../../github
           ./vcpkg/bootstrap-vcpkg.bat
           cd vcpkg
-          D:/a/github/vcpkg >> $VCPKG_ROOT
+          'D:/a/github/vcpkg' >> $VCPKG_ROOT
 
       - name: Clone arrow
         run: |
