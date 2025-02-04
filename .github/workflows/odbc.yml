@@ -10,15 +10,13 @@ jobs:
     steps:
       - name: Create repo directories
         run: |
-          mkdir github
-          cd github
+          mkdir ../../github
 
       - name: Clone
         run: |
-          cd github
+          cd ../../github
           git clone https://github.com/microsoft/vcpkg.git
           pwd
-          tree
 
       # - name: Clone vcpkg
       #   uses: actions/checkout@v4
@@ -27,10 +25,11 @@ jobs:
     
       - name: Set up vcpkg
         run: |
-          cd github
+          cd ../../github
           pwd
           ./vcpkg/bootstrap-vcpkg.bat
           cd vcpkg
+          pwd
           pwd >> $VCPKG_ROOT
           echo $VCPKG_ROOT
 
