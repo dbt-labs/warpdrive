@@ -12,43 +12,40 @@ jobs:
         run: |
           mkdir ../../github
 
-      - name: Clone
+      - name: Clone vcpkg
         run: |
           cd ../../github
           git clone https://github.com/microsoft/vcpkg.git
-          pwd
 
-      # - name: Clone vcpkg
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: microsoft/vcpkg
-    
       - name: Set up vcpkg
         run: |
           cd ../../github
-          pwd
           ./vcpkg/bootstrap-vcpkg.bat
           cd vcpkg
-          pwd
           pwd >> $VCPKG_ROOT
-          echo $VCPKG_ROOT
 
       - name: Clone arrow
-        uses: actions/checkout@v4
-        with:
-          repository: arrow/arrow
+        run: |
+          cd ../../github
+          git clone https://github.com/apache/arrow.git
 
-      - name: Clone flight
-        uses: actions/checkout@v4
-        with:
-          repository: dbt-labs/flightsql-odbc
+      - name: Clone flight odbc
+        run: |
+          cd ../../github
+          git clone https://github.com/dbt-labs/flightsql-odbc.git
 
       - name: Install CMake
         uses: ssrobins/install-cmake@v1
 
       - uses: actions/checkout@v4
 
-      - name: Show directory tree
+      - name: Change repo path to local repos
         run: |
-          echo $VCPKG_ROOT
-          tree
+           (Get-Content .\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/github/arrow"') | Set-Content .\build_win64.bat
+           (Get-Content .\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/github/flightsql-odbc"') | Set-Content .\build_win64.bat
+
+      - name: Upload bat file
+        uses: actions/upload-artifact@v2
+        with:
+          name: build_win64.bat
+          path: '.\build_win64.bat'
