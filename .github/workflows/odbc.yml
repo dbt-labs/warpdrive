@@ -34,8 +34,8 @@ jobs:
           cd ../../github
           git clone https://github.com/dbt-labs/flightsql-odbc.git
 
-      - name: Install CMake
-        uses: ssrobins/install-cmake@v1
+      # - name: Install CMake
+      #   uses: ssrobins/install-cmake@v1
 
       - uses: actions/checkout@v4
 
