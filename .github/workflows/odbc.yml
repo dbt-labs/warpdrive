@@ -49,7 +49,7 @@ jobs:
         run: |
           tree
           mkdir D:\a\wd
-          cp D:\a\warpdrive\ D:\a\wd
+          Copy-Item -Path "D:\a\warpdrive" -Destination "D:\a\wd" -Recurse
           cd D:\a\wd\warpdrive
           tree
 
