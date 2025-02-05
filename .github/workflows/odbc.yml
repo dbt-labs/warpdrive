@@ -20,25 +20,25 @@ jobs:
         run: |
           mkdir ../../gh
 
-      - name: Clone vcpkg
-        run: |
-          cd ../../gh
-          git clone https://github.com/microsoft/vcpkg.git
+      # - name: Clone vcpkg
+      #   run: |
+      #     cd ../../gh
+      #     git clone https://github.com/microsoft/vcpkg.git
 
-      - name: Set up vcpkg
-        run: |
-          cd ../../gh
-          ./vcpkg/bootstrap-vcpkg.bat
+      # - name: Set up vcpkg
+      #   run: |
+      #     cd ../../gh
+      #     ./vcpkg/bootstrap-vcpkg.bat
 
-      - name: Clone arrow
-        run: |
-          cd ../../gh
-          git clone https://github.com/apache/arrow.git
+      # - name: Clone arrow
+      #   run: |
+      #     cd ../../gh
+      #     git clone https://github.com/apache/arrow.git
 
-      - name: Clone flight odbc
-        run: |
-          cd ../../gh
-          git clone https://github.com/dbt-labs/flightsql-odbc.git
+      # - name: Clone flight odbc
+      #   run: |
+      #     cd ../../gh
+      #     git clone https://github.com/dbt-labs/flightsql-odbc.git
 
       # - name: Install CMake
       #   uses: ssrobins/install-cmake@v1
@@ -49,7 +49,7 @@ jobs:
         run: |
           tree
           mkdir D:\a\wd
-          cp D:\a\warpdrive\warpdrive D:\a\wd
+          mv D:\a\warpdrive\ D:\a\wd
           pwd
           tree
 
