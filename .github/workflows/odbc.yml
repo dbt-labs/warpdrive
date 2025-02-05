@@ -43,15 +43,20 @@ jobs:
       # - name: Install CMake
       #   uses: ssrobins/install-cmake@v1
 
-      - uses: actions/checkout@v4
+      # - uses: actions/checkout@v4
 
-      - name: Move directories to shorten path
+      - name: Clone warpdrive
         run: |
-          tree
-          mkdir D:\a\wd
-          Copy-Item -Path "D:\a\warpdrive" -Destination "D:\a\wd" -Recurse
-          cd D:\a\wd\warpdrive
-          tree
+          cd D:\a\wd
+          git clone https://github.com/dbt-labs/warpdrive
+
+      # - name: Move directories to shorten path
+      #   run: |
+      #     tree
+      #     mkdir D:\a\wd
+      #     Copy-Item -Path "D:\a\warpdrive" -Destination "D:\a\wd" -Recurse
+      #     cd D:\a\wd\warpdrive
+      #     tree
 
 
       - name: Change repo path to local repos
@@ -60,10 +65,10 @@ jobs:
           #  ./build_win64.bat
           #  ls D:\a\wd
           #  ls D:\a\wd\warpdrive
-          ls D:\a\wd\warpdrive
-          #  (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          #  (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          #  (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/github/vcpkg') | Set-Content D:\a\wd\warpdrive\build_win64.batZ
+          # ls D:\a\wd\warpdrive
+           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/github/vcpkg') | Set-Content D:\a\wd\warpdrive\build_win64.batZ
      
       - name: Upload bat file
         uses: actions/upload-artifact@v4
