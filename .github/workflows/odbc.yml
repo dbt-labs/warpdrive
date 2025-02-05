@@ -43,7 +43,7 @@ jobs:
       # - name: Install CMake
       #   uses: ssrobins/install-cmake@v1
 
-      # - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Move directories to shorten path
         run: |
