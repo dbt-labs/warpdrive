@@ -56,7 +56,7 @@ jobs:
 
       - name: Change repo path to local repos
         run: |
-           cd D:\a\wd
+           cd D:\a\wd\warpdrive
            (Get-Content .\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"') | Set-Content .\build_win64.bat
            (Get-Content .\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content .\build_win64.bat
            (Get-Content .\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/github/vcpkg') | Set-Content .\build_win64.bat
