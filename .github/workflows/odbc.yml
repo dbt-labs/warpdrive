@@ -47,6 +47,7 @@ jobs:
 
       - name: Move directories to shorten path
         run: |
+          tree
           mkdir D:\a\wd
           cp D:\a\warpdrive\warpdrive D:\a\wd
           pwd
