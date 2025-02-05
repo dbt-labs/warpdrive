@@ -49,8 +49,8 @@ jobs:
         run: |
           tree
           mkdir D:\a\wd
-          mv D:\a\warpdrive\ D:\a\wd
-          pwd
+          cp D:\a\warpdrive\ D:\a\wd
+          cd D:\a\wd
           tree
 
 
