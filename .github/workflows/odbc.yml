@@ -47,6 +47,7 @@ jobs:
 
       - name: Clone warpdrive
         run: |
+          mkdir D:\a\wd
           cd D:\a\wd
           git clone https://github.com/dbt-labs/warpdrive
 
