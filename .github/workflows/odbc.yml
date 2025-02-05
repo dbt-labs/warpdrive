@@ -50,7 +50,7 @@ jobs:
           tree
           mkdir D:\a\wd
           cp D:\a\warpdrive\ D:\a\wd
-          cd D:\a\wd
+          cd D:\a\wd\warpdrive
           tree
 
 
