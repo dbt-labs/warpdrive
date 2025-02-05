@@ -3,6 +3,14 @@ name: ODBC Driver
 on:
   pull_request:
   push:
+  workflow_dispatch:
+        inputs:
+            ARROW_GIT_TAG:
+                description: "The tag from https://github.com/apache/arrow to be pulled"
+                required: true
+            ODBCABSTRACTION_GIT_TAG:
+                description: "The tag from https://github.com/dbt-labs/flightsql-odbc to be pulled"
+                required: true
 
 jobs:
   windows-odbc:
@@ -10,26 +18,26 @@ jobs:
     steps:
       - name: Create repo directories
         run: |
-          mkdir ../../github
+          mkdir ../../gh
 
       - name: Clone vcpkg
         run: |
-          cd ../../github
+          cd ../../gh
           git clone https://github.com/microsoft/vcpkg.git
 
       - name: Set up vcpkg
         run: |
-          cd ../../github
+          cd ../../gh
           ./vcpkg/bootstrap-vcpkg.bat
 
       - name: Clone arrow
         run: |
-          cd ../../github
+          cd ../../gh
           git clone https://github.com/apache/arrow.git
 
       - name: Clone flight odbc
         run: |
-          cd ../../github
+          cd ../../gh
           git clone https://github.com/dbt-labs/flightsql-odbc.git
 
       # - name: Install CMake
@@ -37,22 +45,28 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: Change repo path to local repos
-        run: |
-           (Get-Content .\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/github/arrow"') | Set-Content .\build_win64.bat
-           (Get-Content .\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/github/flightsql-odbc"') | Set-Content .\build_win64.bat
-           (Get-Content .\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/github/vcpkg') | Set-Content .\build_win64.bat
+      - name: Move directories to shorten path
+        run: | 
+          pwd
+          tree
 
-      - name: Upload bat file
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_win64.bat
-          path: '.\build_win64.bat'
 
-      - name: Set up MSVC Dev command prompt
-        uses: ilammy/msvc-dev-cmd@v1.13.0
-        with:
-          arch: x64
+      # - name: Change repo path to local repos
+      #   run: |
+      #      (Get-Content .\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"') | Set-Content .\build_win64.bat
+      #      (Get-Content .\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content .\build_win64.bat
+      #      (Get-Content .\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/github/vcpkg') | Set-Content .\build_win64.bat
 
-      - name: Build ODBC Driver
-        run: ./build_win64.bat
+      # - name: Upload bat file
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build_win64.bat
+      #     path: '.\build_win64.bat'
+
+      # - name: Set up MSVC Dev command prompt
+      #   uses: ilammy/msvc-dev-cmd@v1.13.0
+      #   with:
+      #     arch: x64
+
+      # - name: Build ODBC Driver
+      #   run: ./build_win64.bat
