@@ -51,8 +51,9 @@ jobs:
           cd D:\a\wd
           git clone https://github.com/dbt-labs/warpdrive
           cd D:\a\wd\warpdrive
+          git show-ref
           git checkout gha-odbc
-          git log
+          # git log
 
       # - name: Move directories to shorten path
       #   run: |
