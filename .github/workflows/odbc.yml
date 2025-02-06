@@ -1,0 +1,23 @@
+name: ODBC Driver
+
+on:
+  workflow_dispatch:
+    inputs:
+      ARROW_GIT_TAG:
+          description: "The tag from https://github.com/apache/arrow to be pulled"
+          required: false
+          default: 'main'
+      ODBCABSTRACTION_GIT_TAG:
+          description: "The tag from https://github.com/dbt-labs/flightsql-odbc to be pulled"
+          required: false
+          default: 'master'
+  pull_request:
+  push:
+
+jobs:
+  windows-odbc:
+    runs-on: windows-latest
+    steps:
+      - name: Print user input commits
+        run: |
+          echo "${{ toJSON(github.event.inputs) }}"
