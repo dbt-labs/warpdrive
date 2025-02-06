@@ -4,13 +4,13 @@ on:
   pull_request:
   push:
   workflow_dispatch:
-        inputs:
-            ARROW_GIT_TAG:
-                description: "The tag from https://github.com/apache/arrow to be pulled"
-                required: true
-            ODBCABSTRACTION_GIT_TAG:
-                description: "The tag from https://github.com/dbt-labs/flightsql-odbc to be pulled"
-                required: true
+    inputs:
+      ARROW_GIT_TAG:
+          description: "The tag from https://github.com/apache/arrow to be pulled"
+          required: false
+      ODBCABSTRACTION_GIT_TAG:
+          description: "The tag from https://github.com/dbt-labs/flightsql-odbc to be pulled"
+          required: false
 
 jobs:
   windows-odbc:
@@ -30,18 +30,15 @@ jobs:
           cd ../../gh
           ./vcpkg/bootstrap-vcpkg.bat
 
-      - name: Clone arrow
+      - name: Clone arrow with commit (${{ github.event.inputs.ARROW_GIT_TAG }})
         run: |
           cd ../../gh
           git clone https://github.com/apache/arrow.git
 
-      - name: Clone flight odbc
+      - name: Clone flight odbc with commit (${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }})
         run: |
           cd ../../gh
           git clone https://github.com/dbt-labs/flightsql-odbc.git
-
-      # - name: Install CMake
-      #   uses: ssrobins/install-cmake@v1
 
       # - uses: actions/checkout@v4
 
@@ -54,26 +51,20 @@ jobs:
           git checkout gha-odbc
           git log
 
-      # - name: Move directories to shorten path
-      #   run: |
-      #     tree
-      #     mkdir D:\a\wd
-      #     Copy-Item -Path "D:\a\warpdrive" -Destination "D:\a\wd" -Recurse
-      #     cd D:\a\wd\warpdrive
-      #     tree
-
-
       - name: Change repo path to local repos
         run: |
-          # #  cd D:\a\wd\warpdrive
-          #  ./build_win64.bat
-          #  ls D:\a\wd
-          #  ls D:\a\wd\warpdrive
-          # ls D:\a\wd\warpdrive
-           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('ODBCABSTRACTION_REPO="../flightsql-odbc"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-           (Get-Content D:\a\wd\warpdrive\build_win64.bat).Replace('%VCPKG_ROOT%', 'D:/a/gh/vcpkg') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-     
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(\.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(\.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(\.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+
+      - name: Set commits for flight and arrow
+        if: ${{ github.event.inputs.ARROW_GIT_TAG }} != null || ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }} != null
+        run: |
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(\.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(\.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+
+      # TODO: REMOVE
       - name: Upload bat file
         uses: actions/upload-artifact@v4
         with:
@@ -89,3 +80,10 @@ jobs:
         run: |
           cd D:\a\wd\warpdrive
           .\build_win64.bat
+
+      # TODO: add name and path to driver
+      # - name: Upload ODBC Driver
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: <Driver file name>
+      #     path: <Driver path name>
