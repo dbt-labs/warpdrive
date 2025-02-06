@@ -51,20 +51,19 @@ jobs:
           git clone https://github.com/Bit-Quill/warpdrive.git
           cd D:\a\wd\warpdrive
           git checkout gha-odbc
-          git log
 
       - name: Change repo path to local repos
         run: |
           (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(\.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(\.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(\.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(\.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(\.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg' | Set-Content D:\a\wd\warpdrive\build_win64.bat
 
       - name: Set commits for flight and arrow
         if: ${{ github.event.inputs.ARROW_GIT_TAG }} != null || ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }} != null
         run: |
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(\.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(\.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"') | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(\.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(\.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
 
       # TODO: REMOVE
       - name: Upload bat file
