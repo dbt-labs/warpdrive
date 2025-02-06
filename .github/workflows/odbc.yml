@@ -50,6 +50,8 @@ jobs:
           mkdir D:\a\wd
           cd D:\a\wd
           git clone https://github.com/dbt-labs/warpdrive
+          cd D:\a\wd\warpdrive
+          tree
 
       # - name: Move directories to shorten path
       #   run: |
