@@ -60,7 +60,7 @@ jobs:
           (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg' | Set-Content D:\a\wd\warpdrive\build_win64.bat
 
       - name: Set commits for flight and arrow
-        if: ${{ github.event.inputs.ARROW_GIT_TAG }} != null || ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }} != null
+        if: ${{ github.event.inputs.ARROW_GIT_TAG }} > '' || ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }} > ''
         run: |
           (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
           (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
