@@ -82,6 +82,16 @@ jobs:
           cd D:\a\wd\warpdrive
           .\build_win64.bat
 
+      - name: Build zip file
+        run: |
+          Compress-Archive -Path D:\a\wd\warpdrive\build\ -DestinationPath D:\a\wd\warpdrive\build.zip
+
+      - name: Upload build directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: build.zip
+          path: 'D:\a\wd\warpdrive\build.zip'
+
       # TODO: add name and path to driver
       # - name: Upload ODBC Driver
       #   uses: actions/upload-artifact@v4
