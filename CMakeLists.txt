@@ -665,10 +665,6 @@ list(APPEND WARPDRIVE_SHARED_INSTALL_INTERFACE_LIBS odbcabstraction)
 
 # Add include directories for _only_ the ODBCAbstraction SPI.
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/ODBCAbstraction-prefix/src/ODBCAbstraction/odbcabstraction/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/ODBCAbstraction-prefix/src/ODBCAbstraction-build/_deps/spdlog-src/include)
-
-# Ensure fmt is loaded as header only
-add_compile_definitions(FMT_HEADER_ONLY)
 
 #
 # Linker and Dependencies
