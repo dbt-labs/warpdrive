@@ -35,47 +35,38 @@ jobs:
           cd ../../gh
           git clone https://github.com/apache/arrow.git
 
-      # TODO: change https://github.com/jduo/flightsql-odbc.git to https://github.com/dbt-labs/flightsql-odbc.git
       - name: Clone flight odbc with commit (${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }})
         run: |
           cd ../../gh
-          git clone https://github.com/jduo/flightsql-odbc.git
+          git clone https://github.com/dbt-labs/flightsql-odbc.git
 
-      # - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       # TODO: if path length is not an issue use actions/checkout@v4 instead of cloning warpdrive
       # Change D:\a\wd\warpdrive to D:\a\warpdrive\warpdrive for all occurences in this file
-      - name: Clone warpdrive
-        run: |
-          mkdir D:\a\wd
-          cd D:\a\wd
-          git clone https://github.com/Bit-Quill/warpdrive.git
-          cd D:\a\wd\warpdrive
-          git checkout gha-odbc
-
       - name: Change repo path to local repos
         run: |
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
 
       - name: Set commits for flight
         if: ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG > '' }}
         run: |
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
 
       - name: Set commits for arrow
         if: ${{ github.event.inputs.ARROW_GIT_TAG > '' }}
         run: |
-          (Get-Content D:\a\wd\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\wd\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
 
       # TODO: REMOVE
       - name: Upload bat file
         uses: actions/upload-artifact@v4
         with:
           name: build_win64.bat
-          path: 'D:\a\wd\warpdrive\build_win64.bat'
+          path: 'D:\a\warpdrive\warpdrive\build_win64.bat'
 
       - name: Set up MSVC Dev command prompt
         uses: ilammy/msvc-dev-cmd@v1.13.0
@@ -84,20 +75,20 @@ jobs:
 
       - name: Build ODBC Driver
         run: |
-          cd D:\a\wd\warpdrive
+          cd D:\a\warpdrive\warpdrive
           .\build_win64.bat
 
       # TODO: REMOVE
       - name: Build zip file
         run: |
-          Compress-Archive -Path D:\a\wd\warpdrive\build\ -DestinationPath D:\a\wd\warpdrive\build.zip
+          Compress-Archive -Path D:\a\warpdrive\warpdrive\build\ -DestinationPath D:\a\warpdrive\warpdrive\build.zip
 
       # TODO: REMOVE
       - name: Upload build directory
         uses: actions/upload-artifact@v4
         with:
           name: build.zip
-          path: 'D:\a\wd\warpdrive\build.zip'
+          path: 'D:\a\warpdrive\warpdrive\build.zip'
 
       # TODO: add name and path to driver
       # - name: Upload ODBC Driver
