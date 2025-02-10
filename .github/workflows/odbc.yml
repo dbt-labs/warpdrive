@@ -38,12 +38,10 @@ jobs:
       - name: Clone flight odbc with commit (${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }})
         run: |
           cd ../../gh
-          git clone https://github.com/dbt-labs/flightsql-odbc.git
+          git clone https://github.com/jduo/flightsql-odbc.git
 
       - uses: actions/checkout@v4
 
-      # TODO: if path length is not an issue use actions/checkout@v4 instead of cloning warpdrive
-      # Change D:\a\wd\warpdrive to D:\a\warpdrive\warpdrive for all occurences in this file
       - name: Change repo path to local repos
         run: |
           (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
@@ -61,38 +59,8 @@ jobs:
         run: |
           (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
 
-      # TODO: REMOVE
-      - name: Upload bat file
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_win64.bat
-          path: 'D:\a\warpdrive\warpdrive\build_win64.bat'
-
-      - name: Set up MSVC Dev command prompt
-        uses: ilammy/msvc-dev-cmd@v1.13.0
-        with:
-          arch: x64
-
-      - name: Build ODBC Driver
-        run: |
-          cd D:\a\warpdrive\warpdrive
-          .\build_win64.bat
-
-      # TODO: REMOVE
-      - name: Build zip file
-        run: |
-          Compress-Archive -Path D:\a\warpdrive\warpdrive\build\ -DestinationPath D:\a\warpdrive\warpdrive\build.zip
-
-      # TODO: REMOVE
-      - name: Upload build directory
-        uses: actions/upload-artifact@v4
-        with:
-          name: build.zip
-          path: 'D:\a\warpdrive\warpdrive\build.zip'
-
-      # TODO: add name and path to driver
-      # - name: Upload ODBC Driver
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: <Driver file name>
-      #     path: <Driver path name>
+#      - name: Upload ODBC Driver
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: dbtlabs-flight-sql-odbc-driver-v1.0
+#          path: <Driver path name>
