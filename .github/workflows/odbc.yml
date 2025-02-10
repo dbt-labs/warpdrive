@@ -59,8 +59,18 @@ jobs:
         run: |
           (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
 
+      - name: Set up MSVC Dev command prompt
+        uses: ilammy/msvc-dev-cmd@v1.13.0
+        with:
+          arch: x64
+
+      - name: Build ODBC Driver
+        run: |
+          cd D:\a\warpdrive\warpdrive
+          .\build_win64.bat
+
 #      - name: Upload ODBC Driver
 #        uses: actions/upload-artifact@v4
 #        with:
 #          name: dbtlabs-flight-sql-odbc-driver-v1.0
-#          path: <Driver path name>
+#          path: D:/a/warpdrive/warpdrive/build/Release/odbc-driver.dll
