@@ -73,4 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dbtlabs-flight-sql-odbc-driver
-          path: D:/a/warpdrive/warpdrive/build/release/Release/*.dll
+          path: |
+            D:/a/warpdrive/warpdrive/build/release/Release/*.dll
+            D:/a/warpdrive/warpdrive/build/release/Release/cacerts.pem
+
