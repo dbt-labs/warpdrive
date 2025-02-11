@@ -38,7 +38,7 @@ jobs:
       - name: Clone flight odbc with commit (${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }})
         run: |
           cd ../../gh
-          git clone https://github.com/jduo/flightsql-odbc.git
+          git clone https://github.com/dbt-labs/flightsql-odbc.git
 
       - uses: actions/checkout@v4
 
