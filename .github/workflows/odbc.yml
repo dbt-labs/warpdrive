@@ -69,6 +69,15 @@ jobs:
           cd D:\a\warpdrive\warpdrive
           .\build_win64.bat
 
+      - name: List contents of release/ and release/Release/
+        shell: cmd
+        run: |
+          echo Checking release/ directory...
+          dir /s D:\a\warpdrive\warpdrive\build\release\ || echo release/ directory not found!
+          
+          echo Checking release/Release/ directory...
+          dir /s D:\a\warpdrive\warpdrive\build\release\Release\ || echo release/Release/ directory not found!
+
       - name: Upload ODBC Driver
         uses: actions/upload-artifact@v4
         with:
