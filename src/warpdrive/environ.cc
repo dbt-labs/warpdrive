@@ -31,8 +31,6 @@
 #include "loadlib.h"
 #include "new_driver.h"
 #include <odbcabstraction/odbc_impl/ODBCEnvironment.h>
-#include <odbcabstraction/spi/driver.h>
-#include <odbcabstraction/logger.h>
 
 
 /* The one instance of the handles */
@@ -73,13 +71,10 @@ namespace {
 	static std::mutex s_driverLock;
 
 void InitializeDriverIfNeeded() {
-  std::lock_guard<std::mutex> lock(s_driverLock);
-  if (s_driver == nullptr) {
-    s_driver = CreateDriver();
-    s_driver->RegisterLog();
-
-    LOG_DEBUG("Driver initialized");
-  }
+	std::lock_guard<std::mutex> lock(s_driverLock);
+	if (s_driver == nullptr) {
+		s_driver = CreateDriver();
+	}
 }
 }
 
