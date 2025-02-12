@@ -69,6 +69,11 @@ jobs:
           cd D:\a\warpdrive\warpdrive
           .\build_win64.bat
 
+      # TODO: REMOVE
+      - name: Build zip file
+        run: |
+          Compress-Archive -Path D:\a\warpdrive\warpdrive\build\ -DestinationPath D:\a\warpdrive\warpdrive\build.zip
+
       - name: Upload ODBC Driver
         uses: actions/upload-artifact@v4
         with:
