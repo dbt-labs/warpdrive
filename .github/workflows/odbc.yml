@@ -1,0 +1,82 @@
+name: ODBC Driver
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+    inputs:
+      ARROW_GIT_TAG:
+          description: "The tag from https://github.com/apache/arrow to be pulled"
+          required: false
+      ODBCABSTRACTION_GIT_TAG:
+          description: "The tag from https://github.com/dbt-labs/flightsql-odbc to be pulled"
+          required: false
+
+jobs:
+  windows-odbc:
+    runs-on: windows-latest
+    steps:
+      - name: Create repo directories
+        run: |
+          mkdir ../../gh
+
+      - name: Clone vcpkg
+        run: |
+          cd ../../gh
+          git clone https://github.com/microsoft/vcpkg.git
+
+      - name: Set up vcpkg
+        run: |
+          cd ../../gh
+          ./vcpkg/bootstrap-vcpkg.bat
+
+      - name: Clone arrow with commit (${{ github.event.inputs.ARROW_GIT_TAG }})
+        run: |
+          cd ../../gh
+          git clone https://github.com/apache/arrow.git
+
+      - name: Clone flight odbc with commit (${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }})
+        run: |
+          cd ../../gh
+          git clone https://github.com/dbt-labs/flightsql-odbc.git
+
+      - uses: actions/checkout@v4
+
+      - name: Change repo path to local repos
+        run: |
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_REPOSITORY="(.*?)"', 'ARROW_GIT_REPOSITORY="D:/a/gh/arrow"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_REPO="(.*?)"', 'ODBCABSTRACTION_REPO="D:/a/gh/flightsql-odbc"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'VCPKG_ROOT="(.*?)"', 'VCPKG_ROOT="D:/a/gh/vcpkg"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace '%VCPKG_ROOT%', 'D:/a/gh/vcpkg' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+
+      - name: Set commits for flight
+        if: ${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG > '' }}
+        run: |
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ODBCABSTRACTION_GIT_TAG="(.*?)"', 'ODBCABSTRACTION_GIT_TAG="${{ github.event.inputs.ODBCABSTRACTION_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+
+      - name: Set commits for arrow
+        if: ${{ github.event.inputs.ARROW_GIT_TAG > '' }}
+        run: |
+          (Get-Content D:\a\warpdrive\warpdrive\build_win64.bat) -replace 'ARROW_GIT_TAG="(.*?)"', 'ARROW_GIT_TAG="${{ github.event.inputs.ARROW_GIT_TAG }}"' | Set-Content D:\a\warpdrive\warpdrive\build_win64.bat
+
+      - name: Set up MSVC Dev command prompt
+        uses: ilammy/msvc-dev-cmd@v1.13.0
+        with:
+          arch: x64
+
+      - name: Build ODBC Driver
+        run: |
+          cd D:\a\warpdrive\warpdrive
+          .\build_win64.bat
+
+      - name: Copy cacert.pem to release directory
+        run: copy D:\a\warpdrive\warpdrive\cacert.pem D:\a\warpdrive\warpdrive\build\release\Release\
+
+      - name: Upload ODBC Driver
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbtlabs-flight-sql-odbc-driver
+          path: |
+            D:/a/warpdrive/warpdrive/build/release/Release/*.dll
+            D:/a/warpdrive/warpdrive/build/release/Release/cacert.pem
+

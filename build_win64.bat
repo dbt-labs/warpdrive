@@ -10,7 +10,9 @@
 
 @ECHO OFF
 
-%VCPKG_ROOT%\vcpkg.exe install --triplet x64-windows --x-install-root=%VCPKG_ROOT%/installed
+git config --system core.longpaths true
+
+%VCPKG_ROOT%/vcpkg.exe install --triplet x64-windows --x-install-root=%VCPKG_ROOT%/installed
 
 if exist ".\build" del build /q
 
@@ -22,7 +24,8 @@ SETLOCAL
 if NOT DEFINED ARROW_GIT_REPOSITORY SET ARROW_GIT_REPOSITORY="https://github.com/apache/arrow"
 if NOT DEFINED ARROW_GIT_TAG SET ARROW_GIT_TAG="b050bd0d31db6412256cec3362c0d57c9732e1f2"
 if NOT DEFINED ODBCABSTRACTION_REPO SET ODBCABSTRACTION_REPO="../flightsql-odbc"
-if NOT DEFINED ODBCABSTRACTION_GIT_TAG SET ODBCABSTRACTION_GIT_TAG="d2a1029b0641febb0872831bec1b90fe3f635dd3"
+if NOT DEFINED ODBCABSTRACTION_GIT_TAG SET ODBCABSTRACTION_GIT_TAG="69bf1efdcaa4d63f3c3aeaafa8c43c49d3840ee3"
+if NOT DEFINED VCPKG_ROOT SET VCPKG_ROOT="../vcpkg"
 
 cmake ..^
     -DARROW_GIT_REPOSITORY=%ARROW_GIT_REPOSITORY%^
