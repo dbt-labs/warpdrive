@@ -69,16 +69,6 @@ jobs:
           cd D:\a\warpdrive\warpdrive
           .\build_win64.bat
 
-      # TODO: REMOVE
-      - name: Build zip file
-        run: |
-          Compress-Archive -Path D:\a\warpdrive\warpdrive\build\ -DestinationPath D:\a\warpdrive\warpdrive\build.zip
-
-      - name: Upload build directory
-        uses: actions/upload-artifact@v4
-        with:
-          name: build.zip
-          path: 'D:\a\warpdrive\warpdrive\build.zip'
 
       - name: Upload ODBC Driver
         uses: actions/upload-artifact@v4
@@ -86,5 +76,5 @@ jobs:
           name: dbtlabs-flight-sql-odbc-driver
           path: |
             D:/a/warpdrive/warpdrive/build/release/Release/*.dll
-            D:/a/warpdrive/warpdrive/build/release/Release/cacerts.pem
+            D:/a/warpdrive/warpdrive/cacert.pem
 
