@@ -69,6 +69,8 @@ jobs:
           cd D:\a\warpdrive\warpdrive
           .\build_win64.bat
 
+      - name: Copy cacert.pem to release directory
+        run: copy D:\a\warpdrive\warpdrive\cacert.pem D:\a\warpdrive\warpdrive\build\release\Release\
 
       - name: Upload ODBC Driver
         uses: actions/upload-artifact@v4
@@ -76,5 +78,5 @@ jobs:
           name: dbtlabs-flight-sql-odbc-driver
           path: |
             D:/a/warpdrive/warpdrive/build/release/Release/*.dll
-            D:/a/warpdrive/warpdrive/cacert.pem
+            D:/a/warpdrive/warpdrive/build/release/Release/cacert.pem
 
